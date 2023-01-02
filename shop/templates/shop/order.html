@@ -1,0 +1,20 @@
+{% extends "shop/layout.html" %}
+
+{% block title %}Order{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 50px;">
+        <h2>Order #{{ products.id }} From {{ products.order_time }}</h2>
+        <div class="row" style="padding: 20px; font-size: 20px;">
+            <ul>
+            {% for product in products.product.all %}
+                <li><a href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}">{{ product.product_id.title }}&nbsp;&nbsp;&nbsp;{{ product.product_quantity }}&nbsp;&nbsp;&nbsp;${{ product.product_price }}</a></li>
+            {% endfor %}
+            </ul>
+        </div>
+        <br>
+        <div style="float: right;">
+            <h3>TOTAL COST: ${{ products.total_cost }}</h3>
+        </div>
+    </div>
+{% endblock %}

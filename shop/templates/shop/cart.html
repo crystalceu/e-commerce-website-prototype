@@ -1,0 +1,47 @@
+{% extends "shop/layout.html" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 50px;">
+        <h2>Cart</h2>
+        {% for listing in listings %}
+        <div class="row" style="padding: 20px; font-size: 20px;">
+            {% load static %}
+            <img src="{% static listing.image.url %}" width="150" height="150">
+            <div>
+                <a>&nbsp; &nbsp; {{ listing.title }} &nbsp;</a>
+                <div class="row" style="float: right;">
+                    <a>&nbsp; &nbsp;</a>
+                    <form class="form" action="{% url 'update_cart' listing.id 'remove' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btnprimary">-</button>
+                    </form>
+                    <a>&nbsp;{{ listing.quantity }}&nbsp;</a>
+                    <form class="form" action="{% url 'update_cart' listing.id 'add' %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btnprimary">+</button>
+                    </form>
+                </div>
+            </div>
+            <div style="margin-top: auto; margin-left: auto;">
+                <a>${% widthratio listing.price 1 listing.quantity %}</a>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+        <div style="float: right;">
+            <h3>${{ total_price }}</h3>
+        </div>
+        <form action="{% url 'cart' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btnprimary" style="width: 300px; height: 40px;">Place Order</button>
+        </form>
+    </div>
+
+    <!--<div style="display: flex; padding: 60px 10px 10px 10px; justify-content: center;">
+        <form>
+            <button class="btn" style="background-color: black; color:aliceblue; width: 600px; height: 60px;">Buy</button>
+        </form>
+    </div>-->
+{% endblock %}

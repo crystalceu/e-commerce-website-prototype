@@ -1,0 +1,46 @@
+{% extends "shop/layout.html" %}
+
+{% block body %}
+    <div style="padding-top: 450px;">
+        <h2 style="text-decoration: underline dotted;" href="{% url 'index' %}">Personal Care</h2>
+        <div class="showcase">
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+        </div>
+        <a class="nav-link" style="float: right;" href="{% url 'index' %}">show more..</a>
+        <br>
+        <h2 style="text-decoration: underline dotted;" href="{% url 'index' %}">Accessories</h2>
+        <div class="showcase">
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+            <div>
+                {% load static %}
+                <img src="{% static 'shop/plastic.jpeg' %}" width="300" height="300">
+                <p>Product</p>
+            </div>
+        </div>
+        <a class="nav-link" style="float: right;" href="{% url 'index' %}">show more..</a>
+        <br>
+    </div>
+{% endblock %}

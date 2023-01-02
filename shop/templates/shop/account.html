@@ -1,0 +1,24 @@
+{% extends "shop/layout.html" %}
+
+{% block title %}Account{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 50px;">
+        <h2>Account</h2>
+        <div class="row" style="padding: 20px; font-size: 20px;">
+            <form action="{% url 'account' %}" method="post">
+                {% csrf_token %}
+                <ul style="list-style-type: none;">
+                    <li><div class="row"><a>Current Password:</a><input class="form-control" name="current_password"></div></li>
+                    <br>
+                    <li><div class="row"><a>New Password:</a><input class="form-control" name="new_password"></div></li>
+                    <br>
+                    <li><div class="row"><a>Repeat New Password:</a><input class="form-control" name="repeat_new_password"></div></li>
+                    <br>
+                    <li><button class="btn btnprimary">Change Password</button></li>
+                </ul>
+            </form>
+        </div>
+        <br>
+    </div>
+{% endblock %}

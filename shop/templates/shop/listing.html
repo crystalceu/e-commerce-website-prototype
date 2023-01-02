@@ -1,0 +1,25 @@
+{% extends "shop/layout.html" %}
+
+{% block title %}{{ listing.title }}{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 50px;">
+        <h2 style="text-decoration: underline dotted;" href="">{{ listing.title }}</h2>
+        <div style="display: inline-block;">
+            <div>
+                {% load static %}
+                <img src="{% static listing.image.url %}" width="300" height="300">
+                <p>Price: ${{ listing.price }}</p>
+                <p>{{ listing.description }}</p>
+                <p>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
+                <p>Category: {{ listing.category.category_name }}</p>
+                <p>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
+                <form class="form" action="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" method="post">
+                    {% csrf_token %}
+                    <button class="btn btnprimary">Add To Cart</button>
+                </form>
+            </div>
+        </div>
+        <br>
+    </div>
+{% endblock %}

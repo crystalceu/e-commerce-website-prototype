@@ -1,0 +1,23 @@
+{% extends "shop/layout.html" %}
+
+{% block title %}Cart{% endblock %}
+
+{% block body %}
+    <div style="padding-top: 50px;">
+        <h2>Orders</h2>
+        {% for listing in listings %}
+        <div class="row" style="padding: 30px; font-size: 20px;">
+            <a href="{% url 'order_view' listing.id %}">&nbsp;&nbsp;{{ listing.id }}&nbsp;&nbsp;
+            {{ listing.order_time }}&nbsp;&nbsp;</a>
+            <a style="margin-left: auto;">${{ listing.total_cost }}</a>
+        </div>
+        <hr>
+        {% endfor %}
+    </div>
+
+    <!--<div style="display: flex; padding: 60px 10px 10px 10px; justify-content: center;">
+        <form>
+            <button class="btn" style="background-color: black; color:aliceblue; width: 600px; height: 60px;">Buy</button>
+        </form>
+    </div>-->
+{% endblock %}
