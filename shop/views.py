@@ -6,12 +6,31 @@ from django.shortcuts import render
 from django.urls import reverse
 from django import forms
 from django.db.models import Subquery
+from random import sample
 
 from .models import User, Categories, Manufacturers, ProductListings, Watchlist, Comments, BigCategories, Orders, OrderProduct
 
+def random(ids_range):
+    if len(ids_range) == 0:
+        return []
+    elif len(ids_range) < 3:
+        return sample(ids_range, len(ids_range))
+    else:
+        return sample(ids_range, 3)
+
 # Create your views here.
 def index(request):
-    return render(request, "shop/index.html")
+    number_of_ids_food = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Food").values('id')
+    ids_food = [item['id'] for item in number_of_ids_food]
+    number_of_ids_care = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="PersonalCare").values('id')
+    ids_care = [item['id'] for item in number_of_ids_care]
+    number_of_ids_accessories = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Accessories").values('id')
+    ids_accessories = [item['id'] for item in number_of_ids_accessories]
+    return render(request, "shop/index.html", {
+        "listings_food": ProductListings.objects.filter(id__in=random(ids_food)),
+        "listings_care": ProductListings.objects.filter(id__in=random(ids_care)),
+        "listings_accessories": ProductListings.objects.filter(id__in=random(ids_accessories))
+    })
 
 def login_view(request):
     if request.method == "POST":
@@ -69,15 +88,23 @@ def register(request):
 
 def account(request):
     if request.method == "POST":
-        if check_password(request.user.password, request.POST['current_password']):
-            print("Incorrect Password")
+        if not request.user.check_password(request.POST['current_password']):
+            return render(request, "shop/information.html", {
+                "information": "Incorrect Password"
+            })
         elif request.POST['new_password'] != request.POST['repeat_new_password']:
-            print("Passwords are not the same")
+            return render(request, "shop/information.html", {
+                "information": "Passwords are not the same"
+            })
         else:
-            print(make_password(request.POST['new_password'], salt=None, hasher='default'))
-            request.user.password = make_password(request.POST['new_password'], salt=None, hasher='default')
-            print("Password has been changed")
-        return HttpResponseRedirect(reverse("account"))
+            u = User.objects.get(id=request.user.id)
+            u.set_password(request.POST['new_password'])
+            username = request.user.username
+            u.save()
+            login(request, authenticate(username=username, password=request.POST['new_password']))
+            return render(request, "shop/information.html", {
+                "information": "Password is successfully changed"
+            })
     else:
         return render(request, "shop/account.html")
 
