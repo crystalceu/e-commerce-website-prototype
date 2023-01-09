@@ -1,7 +1,11 @@
 .header {
-    padding: 10px;
+    padding: 20px;
     /*background-color: #F2DEBAb3; /* rgba(246, 223, 192, 0.7) */
     /*border-bottom: 2px solid #F2DEBA; /* rgb(246, 223, 192) */ 
+}
+
+html {
+    padding: -10px;
 }
 
 .body {
@@ -10,27 +14,32 @@
     /*background-color: #ffefd6a8; /** rgba(255, 244, 229, 0.5) **/
 }
 
-#food-dropdown, #care-dropdown, #accessories-dropdown {
+#_dropdown_navbar, #_account_dropdown, #dropdown-mobile {
     display: none;
     height: 0px;
 }
 
-#food-dropdown a, #care-dropdown a, #accessories-dropdown a {
-    font-size: 16px;
-    color: black;
+.row {
+    margin:0px;
 }
 
 #cart-button {
     background-image: url(cart.svg);
 }
 
+#dropdown-button {
+    background-image: url(dropdown.svg);
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
 .showcase {
     display: flex; 
     flex-direction: row; 
-    flex-wrap: wrap; 
     justify-content: center; 
     gap: 40px;
     text-align: center;
+    flex-wrap: wrap;
 }
 
 .button {
@@ -58,13 +67,16 @@
     color: rgb(156, 156, 156);
 }
 
+.sublisting {
+    padding: 0 0 0 50px;
+}
+
 .listing {
     width: 100%;
-    border: 1px solid rgba(246, 223, 192, 0.764); /** rgba(246, 223, 192, 0.764) **/
+    border: 1px solid rgba(225, 203, 173, 0.803); /** rgba(246, 223, 192, 0.764) **/
     background-color: rgb(255, 246, 235); /** rgb(255, 246, 235) **/
     justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+    font-size: 3rem;
 }
 
 a {
@@ -79,12 +91,17 @@ a:hover {
     background-color: transparent;
 }
 
+.sublisting li a {
+    font-size: 2.2rem;
+    color: #3A8891;
+}
+
 .aactive {
     font-weight: bold;
 }
 
 li a {
-    font-size: large;
+    font-size: 1.3rem;
 }
 
 a span, .btnprimary, .btndanger, .btnsuccess {

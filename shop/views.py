@@ -26,10 +26,31 @@ def index(request):
     ids_care = [item['id'] for item in number_of_ids_care]
     number_of_ids_accessories = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Accessories").values('id')
     ids_accessories = [item['id'] for item in number_of_ids_accessories]
+    ids_food, ids_care, ids_accessories = random(ids_food), random(ids_care), random(ids_accessories)
+    try:
+        food_first = min(ids_food)
+    except:
+        food_first = 0
+    
+    try:
+        care_first = min(ids_care)
+    except:
+        care_first = 0
+
+    try:
+        accessories_first = min(ids_accessories)
+    except:
+        accessories_first = 0
     return render(request, "shop/index.html", {
-        "listings_food": ProductListings.objects.filter(id__in=random(ids_food)),
-        "listings_care": ProductListings.objects.filter(id__in=random(ids_care)),
-        "listings_accessories": ProductListings.objects.filter(id__in=random(ids_accessories))
+        "listings_food": ProductListings.objects.filter(id__in=ids_food),
+        "listings_care": ProductListings.objects.filter(id__in=ids_care),
+        "listings_accessories": ProductListings.objects.filter(id__in=ids_accessories),
+        "food_range": range(0, len(ids_food)),
+        "care_range": range(0, len(ids_care)),
+        "accessories_range": range(0, len(ids_accessories)),
+        "food_first": food_first,
+        "care_first": care_first,
+        "accessories_first": accessories_first
     })
 
 def login_view(request):
@@ -109,7 +130,11 @@ def account(request):
         return render(request, "shop/account.html")
 
 def cart(request):
-    ids = list(request.session['cart_session'].keys())
+    try:
+        ids = list(request.session['cart_session'].keys())
+    except:
+        request.session['cart_session'] = {}
+        ids = list(request.session['cart_session'].keys())
     ids = [int(i) for i in ids]
     total = 0
     listings = ProductListings.objects.filter(id__in=ids)
@@ -119,6 +144,8 @@ def cart(request):
 
     if request.method == "POST":
         # Create order object
+        if total == 0:
+            return HttpResponseRedirect(reverse("cart"))
         newOrder = {}
         newOrder = {'buyer_id': request.user, 'total_cost': total}
         order = Orders.objects.create(**newOrder)
@@ -152,10 +179,16 @@ def listings(request, bigcategory):
     })
 
 def listing(request, bigcategory, category):
-    cat = category[0].upper() + category[1:]
+    if '_' in category:
+        start, end = category.split('_')
+        cat = start[0].upper() + start[1:] + ' ' + end[0].upper() + end[1:]
+        print(cat)
+    else:
+        cat = category[0].upper() + category[1:]
     listings = ProductListings.objects.filter(category__category_name = cat)
     #print(listings)
     return render(request, "shop/listings.html", {
+        "category": cat,
         "listings": listings
     })
 
@@ -166,14 +199,9 @@ def listing_view(request, bigcategory, category, listing_id):
         except:
             request.session['cart_session'][str(listing_id)] = 1
         request.session.modified = True
-        print(request.session['cart_session'])
-        print(list(request.session['cart_session'].keys()))
         cat = category[0].upper() + category[1:]
         listing = ProductListings.objects.get(id = listing_id)
-        return render(request, "shop/listing.html", {
-            "category": cat,
-            "listing": listing
-        })
+        return HttpResponseRedirect(reverse("listing_view", kwargs={'bigcategory': bigcategory, 'category': category, 'listing_id': listing_id}))
     else:
         cat = category[0].upper() + category[1:]
         listing = ProductListings.objects.get(id = listing_id)

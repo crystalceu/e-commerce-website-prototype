@@ -1,6 +1,7 @@
 {% extends "shop/layout.html" %}
 
 {% block body %}
+    {% if not request.user_agent.is_mobile %}
     <div style="padding-top: 450px;">
         {% if listings_food %}
         <a style="text-decoration: underline dotted; color: black; font-size: 24pt;" href="{% url 'categories' 'food' %}">Food</a>
@@ -57,4 +58,142 @@
         <br>
         {% endif %}
     </div>
+    {% else %}
+    <div style="padding-top: 100px;">
+        {% if listings_food %}
+        <a style="text-decoration: underline dotted; color: black; font-size: 3rem;" href="{% url 'categories' 'food' %}">Food</a>
+        
+        <div id="carouselFood" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for i in food_range %}
+                    <li data-bs-target="#carouselFood" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
+                {% endfor %}
+                <li data-bs-target="#carouselFood" data-bs-slide-to="{{ food_range|length }}"></li>
+            </ol>
+
+            {% load static %}
+            <div class="carousel-inner" style="padding: 60px 100px 60px 100px;">
+                {% for listing in listings_food %}
+                    <div class="carousel-item {% if listing.id == food_first %}active{% endif %}">
+                        <div style="display: flex; gap: 20px;">
+                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <div>
+                                <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
+                                <h4>{{ listing.description }}</h4>
+                                <h2>${{ listing.price }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="carousel-item">
+                    <div style="height: 300px; text-align:center;">
+                        <a style="line-height: 320px;"></a>
+                        <a href="{% url 'categories' 'food' %}" style="font-size: 3rem;">show more..</a>
+                    </div>
+                </div>
+            </div>
+
+            <a class="carousel-control-prev" type="button" data-bs-target="#carouselFood" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" type="button" data-bs-target="#carouselFood" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+        <br>
+        {% endif %}
+
+        {% if listings_care %}
+        <a style="text-decoration: underline dotted; color: black; font-size: 3rem;" href="{% url 'categories' 'personal_care' %}">Personal Care</a>
+        
+        <div id="carouselCare" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for i in care_range %}
+                    <li data-bs-target="#carouselCare" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
+                {% endfor %}
+                <li data-bs-target="#carouselCare" data-bs-slide-to="{{ food_range|length }}"></li>
+            </ol>
+
+            {% load static %}
+            <div class="carousel-inner" style="padding: 60px 100px 60px 100px;">
+                {% for listing in listings_food %}
+                    <div class="carousel-item {% if listing.id == food_first %}active{% endif %}">
+                        <div style="display: flex; gap: 20px;">
+                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <div>
+                                <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
+                                <h4>{{ listing.description }}</h4>
+                                <h2>${{ listing.price }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="carousel-item">
+                    <div style="height: 300px; text-align:center;">
+                        <a style="line-height: 320px;"></a>
+                        <a href="{% url 'categories' 'personal_care' %}" style="font-size: 3rem;">show more..</a>
+                    </div>
+                </div>
+            </div>
+
+            <a class="carousel-control-prev" type="button" data-bs-target="#carouselCare" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" type="button" data-bs-target="#carouselCare" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+        <br>
+        {% endif %}
+
+        {% if listings_accessories %}
+        <a style="text-decoration: underline dotted; color: black; font-size: 3rem;" href="{% url 'categories' 'accessories' %}">Accessories</a>
+        
+        <div id="carouselAccessories" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <ol class="carousel-indicators">
+                {% for i in accessories_range %}
+                    <li data-bs-target="#carouselAccessories" data-bs-slide-to="{{ i }}" class="{% if i == 0 %}active{% endif %}"></li>
+                {% endfor %}
+                <li data-bs-target="#carouselAccessories" data-bs-slide-to="{{ accessories_range|length }}"></li>
+            </ol>
+
+            {% load static %}
+            <div class="carousel-inner" style="padding: 60px 100px 60px 100px;">
+                {% for listing in listings_accessories %}
+                    <div class="carousel-item {% if listing.id == accessories_first %}active{% endif %}">
+                        <div style="display: flex; gap: 20px;">
+                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <div>
+                                <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
+                                <h4>{{ listing.description }}</h4>
+                                <h2>${{ listing.price }}</h2>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                <div class="carousel-item">
+                    <div style="height: 300px; text-align:center;">
+                        <a style="line-height: 320px;"></a>
+                        <a href="{% url 'categories' 'accessories' %}" style="font-size: 3rem;">show more..</a>
+                    </div>
+                </div>
+            </div>
+
+            <a class="carousel-control-prev" type="button" data-bs-target="#carouselAccessories" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" type="button" data-bs-target="#carouselAccessories" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+        </div>
+        <br>
+        {% endif %}
+    </div>
+    {% endif %}
 {% endblock %}

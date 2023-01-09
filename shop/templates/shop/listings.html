@@ -4,12 +4,12 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
-        <h2 style="text-decoration: underline dotted;" href="">{{ category }}</h2>
+        <h2 style="text-decoration: underline dotted;">{{ category }}</h2>
         <div class="showcase">
             {% for listing in listings %}
             <div>
                 {% load static %}
-                <div style="flex-direction: column;">
+                <div style="display: flex; flex-direction: column;">
                     <img src="{% static listing.image.url %}" width="300" height="300">
                     <br>
                     <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
