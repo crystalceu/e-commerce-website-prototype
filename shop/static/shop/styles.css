@@ -96,15 +96,28 @@ a:hover {
     color: #3A8891;
 }
 
+.cat-h {
+    text-decoration: underline dotted; 
+    color: black;
+    font-size: 24pt;
+}
+
+.mobile-cat-h {
+    text-decoration: underline dotted; 
+    color: black;
+    font-size: 3.5rem;
+}
+
 .aactive {
     font-weight: bold;
 }
 
-li a {
+li a, .nav-link {
     font-size: 1.3rem;
+    color: #30737a;
 }
 
-a span, .btnprimary, .btndanger, .btnsuccess {
+a span, .btnprimary, .btndanger, .btnsuccess, .btn {
     color: aliceblue;
 }
 
@@ -133,8 +146,6 @@ table th, p {
 }
 
 footer {
-    width: 100%;
-    /*height: 30px;*/
     background-color: #0E5E6Fb3;
     font-family: andale mono, monospace;
     color:rgb(220, 220, 220);

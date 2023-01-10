@@ -4,19 +4,21 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
-        <h2 style="text-decoration: underline dotted;" href="">{{ listing.title }}</h2>
-        <div style="display: inline-block;">
+        <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ listing.title }}</a>
+        <br>
+        <br>
+        <div {% if request.user_agent.is_mobile %} style="display: inline-block;" {% else %} style="display: flex; flex-direction: row; gap: 20px;" {% endif %}>
+            {% load static %}
+            <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="800" height="800" {% else %} width="300" height="300" {% endif %}>
             <div>
-                {% load static %}
-                <img src="{% static listing.image.url %}" width="300" height="300">
-                <p>Price: ${{ listing.price }}</p>
-                <p>{{ listing.description }}</p>
-                <p>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
-                <p>Category: {{ listing.category.category_name }}</p>
-                <p>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 3.2rem;" {% endif %}>Price: ${{ listing.price }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>{{ listing.description }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Category: {{ listing.category.category_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
                 <form class="form" action="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" method="post">
                     {% csrf_token %}
-                    <button class="btn btnprimary">Add To Cart</button>
+                    <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="width: 500px; height: 90px;" {% else %} style="width: 300px; height: 40px;" {% endif %}><a {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>Add To Cart</a></button>
                 </form>
             </div>
         </div>

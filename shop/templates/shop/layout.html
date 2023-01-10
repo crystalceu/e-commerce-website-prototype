@@ -166,32 +166,55 @@
             <script src="{% static 'shop/shop.js' %}"></script>
         {% endblock %}
         <footer class="py-5" style="padding: 10px;">
+            {% if not request.user_agent.is_mobile %}
             <div class="row">
-                <div class="col-6 col-md-2 mb-3">
+            {% endif %}
+            {% if request.user_agent.is_mobile %}
+            <div class="row">
+            {% endif %}
+                <div class="col-6 {% if request.user_agent.is_mobile %}col-md-5{% else %}col-md-2{% endif %} mb-3">
+                    {% if request.user_agent.is_mobile %}
+                    <h2>Help & Information</h2>
+                    {% else %}
                     <h5>Help & Information</h5>
+                    {% endif %}
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a class="nav-link p-0">Help</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0">Delivery</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0" {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Help</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0" {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Delivery</a></li>
                     </ul>
                 </div>
-                <div class="col-6 col-md-2 mb-3">
+                <div class="col-6 {% if request.user_agent.is_mobile %}col-md-5{% else %}col-md-2{% endif %} mb-3">
+                    {% if request.user_agent.is_mobile %}
+                    <h2>About</h2>
+                    {% else %}
                     <h5>About</h5>
+                    {% endif %}
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a class="nav-link p-0">About us</a></li>
-                        <li class="nav-item mb-2"><a class="nav-link p-0">Careers</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0" {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>About us</a></li>
+                        <li class="nav-item mb-2"><a class="nav-link p-0" {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Careers</a></li>
                     </ul>
                 </div>
-                <div class="col-md-5 offset-md-1 mb-3">
+            {% if request.user_agent.is_mobile %}
+            </div>
+            {% endif %}
+                <div class="{% if request.user_agent.is_mobile %}row{% else %}col-md-5 offset-md-1{% endif %} mb-3">
                     <form>
+                        {% if request.user_agent.is_mobile %}
+                        <h2>Subscribe</h2>
+                        <p style="font-size: 1.5rem;">Monthly digest</p>
+                        {% else %}
                         <h5>Subscribe</h5>
                         <p>Monthly digest</p>
+                        {% endif %}
                         <div class="d-flex flex-column flex-sm-row w-100 gap-2">
-                            <input class="form-control" placeholder="Email address">
-                            <button class="btn btn-primary">Subscribe</button>
+                            <input class="form-control" {% if request.user_agent.is_mobile %}style="font-size: 1.5rem;"{% endif %} placeholder="Email address">
+                            <button class="btn" style="background-color: #0E5E6F;"><a {% if request.user_agent.is_mobile %}style="font-size: 1.5rem;"{% endif %}>Subscribe</a></button>
                         </div>
                     </form>
                 </div>
+            {% if not request.user_agent.is_mobile %}
             </div>
+            {% endif %}
             <div class="py-4 my-4 border-top align-items-center">
                 <p>&copy; 2022 &nbsp; &nbsp;<a style="font-family: bradley hand, cursive; font-size: 20px;">Jardin | Le Jardin</a></p>
             </div>

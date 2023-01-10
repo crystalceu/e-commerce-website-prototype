@@ -4,15 +4,21 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
-        <h2 style="text-decoration: underline dotted;">{{ category }}</h2>
+        <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ category }}</a>
+        <br>
+        <br>
         <div class="showcase">
             {% for listing in listings %}
             <div>
                 {% load static %}
-                <div style="display: flex; flex-direction: column;">
-                    <img src="{% static listing.image.url %}" width="300" height="300">
+                <div style="display: flex; flex-direction: column; align-items: center;">
+                    <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="800" height="800" {% else %} width="300" height="300" {% endif %}>
                     <br>
-                    <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
+                    <div style="display: flex; flex-direction: row; align-items: center;">
+                        <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" 
+                        {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% else %} style="font-size: 1.3rem;" {% endif %}>{{ listing.title }}</a>
+                        <a {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% else %} style="font-size: 1.3rem;" {% endif %}>&nbsp;&nbsp;${{ listing.price }}</a>
+                    </div>
                 </div>
             </div>
             {% endfor %}

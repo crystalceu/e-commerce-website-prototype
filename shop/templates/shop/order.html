@@ -4,17 +4,17 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
-        <h2>Order #{{ products.id }} From {{ products.order_time }}</h2>
-        <div class="row" style="padding: 20px; font-size: 20px;">
-            <ul>
+        <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Order #{{ products.id }} From {{ products.order_time }}</a>
+        <div class="row" style="padding: 20px;">
+            <ul {% if request.user_agent.is_mobile %} style="font-size: 2.8rem;" {% else %} style="font-size: 20px;" {% endif %}>
             {% for product in products.product.all %}
-                <li><a href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}">{{ product.product_id.title }}&nbsp;&nbsp;&nbsp;{{ product.product_quantity }}&nbsp;&nbsp;&nbsp;${{ product.product_price }}</a></li>
+                <li><a {% if request.user_agent.is_mobile %} style="font-size: 2.8rem;" {% else %} style="font-size: 20px;" {% endif %} href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}">{{ product.product_id.title }}&nbsp;&nbsp;&nbsp;{{ product.product_quantity }}&nbsp;&nbsp;&nbsp;${{ product.product_price }}</a></li>
             {% endfor %}
             </ul>
         </div>
         <br>
-        <div style="float: right;">
-            <h3>TOTAL COST: ${{ products.total_cost }}</h3>
+        <div {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% else %} style="font-size: 30px;" {% endif %}>
+            <a>TOTAL COST: ${{ products.total_cost }}</a>
         </div>
     </div>
 {% endblock %}

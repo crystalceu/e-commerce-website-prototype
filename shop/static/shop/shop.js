@@ -40,12 +40,12 @@ function show_dropdown(dropdown_block) {
         if (document.querySelector(`#dropdown-mobile`).style.display == 'block') {
             document.querySelector(`#dropdown-mobile`).style.display = 'none';
             document.querySelector(`#dropdown-mobile`).style.height = '0px';
-            document.querySelector(`#dropdown-button`).style.backgroundImage = 'url(static/shop/dropdown.svg)';
+            document.querySelector(`#dropdown-button`).style.backgroundImage = 'url(/static/shop/dropdown.svg)';
         }
         else {
             document.querySelector(`#dropdown-mobile`).style.display = 'block';
             document.querySelector(`#dropdown-mobile`).style.height = '1368px';
-            document.querySelector(`#dropdown-button`).style.backgroundImage = 'url(static/shop/dropup.svg)';
+            document.querySelector(`#dropdown-button`).style.backgroundImage = 'url(/static/shop/dropup.svg)';
         }
     }
 }

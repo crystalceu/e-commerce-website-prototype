@@ -27,31 +27,37 @@ def index(request):
     number_of_ids_accessories = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Accessories").values('id')
     ids_accessories = [item['id'] for item in number_of_ids_accessories]
     ids_food, ids_care, ids_accessories = random(ids_food), random(ids_care), random(ids_accessories)
-    try:
-        food_first = min(ids_food)
-    except:
-        food_first = 0
-    
-    try:
-        care_first = min(ids_care)
-    except:
-        care_first = 0
 
-    try:
-        accessories_first = min(ids_accessories)
-    except:
-        accessories_first = 0
-    return render(request, "shop/index.html", {
-        "listings_food": ProductListings.objects.filter(id__in=ids_food),
-        "listings_care": ProductListings.objects.filter(id__in=ids_care),
-        "listings_accessories": ProductListings.objects.filter(id__in=ids_accessories),
-        "food_range": range(0, len(ids_food)),
-        "care_range": range(0, len(ids_care)),
-        "accessories_range": range(0, len(ids_accessories)),
-        "food_first": food_first,
-        "care_first": care_first,
-        "accessories_first": accessories_first
-    })
+    if request.user_agent.is_mobile:
+        try:
+            food_first = min(ids_food)
+        except:
+            food_first = 0
+        try:
+            care_first = min(ids_care)
+        except:
+            care_first = 0
+        try:
+            accessories_first = min(ids_accessories)
+        except:
+            accessories_first = 0
+        return render(request, "shop/index.html", {
+            "listings_food": ProductListings.objects.filter(id__in=ids_food),
+            "listings_care": ProductListings.objects.filter(id__in=ids_care),
+            "listings_accessories": ProductListings.objects.filter(id__in=ids_accessories),
+            "food_range": range(0, len(ids_food)),
+            "care_range": range(0, len(ids_care)),
+            "accessories_range": range(0, len(ids_accessories)),
+            "food_first": food_first,
+            "care_first": care_first,
+            "accessories_first": accessories_first
+        })
+    else:
+        return render(request, "shop/index.html", {
+            "listings_food": ProductListings.objects.filter(id__in=ids_food),
+            "listings_care": ProductListings.objects.filter(id__in=ids_care),
+            "listings_accessories": ProductListings.objects.filter(id__in=ids_accessories),
+        })
 
 def login_view(request):
     if request.method == "POST":
