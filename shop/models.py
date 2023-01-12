@@ -58,9 +58,19 @@ class Watchlist(models.Model):
     item_id = models.ForeignKey(ProductListings, on_delete=models.CASCADE, related_name="item_id")
     user_id = models.ManyToManyField(User, blank=True, related_name="user_id")
 
+    @classmethod
+    def create(cls, **dinfo):
+        listing = cls(item_id=dinfo[0])
+        return listing
+
 class Comments(models.Model):
     id = models.AutoField(primary_key=True)
     com_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="com_user_id")
     com_item_id = models.ForeignKey(ProductListings, on_delete=models.CASCADE, related_name="com_item_id")
     comment = models.CharField(max_length = 256)
     time = models.DateTimeField(default=timezone.now)
+
+    @classmethod
+    def create(cls, **dinfo):
+        comment = cls(com_user_id=dinfo[0], com_item_id=dinfo[1], comment=dinfo[2])
+        return comment

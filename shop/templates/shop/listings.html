@@ -12,7 +12,9 @@
             <div>
                 {% load static %}
                 <div style="display: flex; flex-direction: column; align-items: center;">
-                    <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="800" height="800" {% else %} width="300" height="300" {% endif %}>
+                    <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                        <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="800" height="800" {% else %} width="300" height="300" {% endif %}>
+                    </a>
                     <br>
                     <div style="display: flex; flex-direction: row; align-items: center;">
                         <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" 

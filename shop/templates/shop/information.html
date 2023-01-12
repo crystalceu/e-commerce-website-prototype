@@ -1,11 +1,15 @@
 {% extends "shop/layout.html" %}
 
-{% block title %}Change Password{% endblock %}
+{% block title %}{{ title }}{% endblock %}
 
 {% block body %}
-    <div style="padding-top: 50px;">
+    <div style="padding-top: 90px;">
         <div style="text-align: center;">
-            <h4>{{ information }}</h4>
+            {% if not request.user_agent.is_mobile %}
+            <h3>{{ information }}</h3>
+            {% else %}
+            <p style="font-size: 2.5rem;">{{ information }}</p>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

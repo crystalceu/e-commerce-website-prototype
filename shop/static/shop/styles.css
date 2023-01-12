@@ -50,7 +50,7 @@ html {
     font-size: small;
 }
 
-.comment{
+.comment {
     border: 1px solid rgb(220, 220, 220);
     background-color: rgba(230, 233, 249, 0.573);
     border-radius: 5px;
@@ -59,7 +59,7 @@ html {
     padding-top: 10px;
 }
 
-.comment h5,.comment span{
+.comment h5, .comment h2,.comment span{
     display: inline;
 }
 
@@ -85,7 +85,7 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+a:hover, .nav-link:hover {
     color: #0E5E6F; /** rgb(0, 65, 150) **/
     font-weight: bold;
     background-color: transparent;
@@ -102,10 +102,22 @@ a:hover {
     font-size: 24pt;
 }
 
+.cat-a {
+    text-decoration: 1.5pt underline; 
+    color: black;
+    font-size: 20pt;
+}
+
 .mobile-cat-h {
     text-decoration: underline dotted; 
     color: black;
     font-size: 3.5rem;
+}
+
+.mobile-cat-a {
+    text-decoration: 1.5pt underline; 
+    color: black;
+    font-size: 3rem;
 }
 
 .aactive {
@@ -142,7 +154,7 @@ table th, p {
 }
 
 .sendcomment {
-    flex: 0 0 350px;
+    flex: 0 0 600px;
 }
 
 footer {

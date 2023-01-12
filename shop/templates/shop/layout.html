@@ -84,7 +84,7 @@
                                     <ul style="list-style-type: none; padding: 0; margin: 0; display: flex; flex-direction: column; align-items: center;">
                                         {% if user.is_authenticated %}
                                         <li><a href="{% url 'orders_view' %}">My Orders</a></li>
-                                        <li><a href="#">Watchlist</a></li>
+                                        <li><a href="{% url 'watchlist' %}">Watchlist</a></li>
                                         <li><a href="{% url 'logout' %}">Log Out</a></li>
                                         {% else %}
                                         <li><a href="{% url 'login' %}">Log In</a></li>
@@ -111,8 +111,7 @@
                 padding: 0px;
                 }
             </style>
-            <div>
-                <div><p>For mobile</p></div>
+            <div style="padding-top: 20px;">
                 <div style="display: flex; flex-direction: column;">
                     <div style="display: flex; justify-content: space-between; align-items: center; padding: 0 20px 0 30px;">
                         <a class="nav-link" style="font-family: bradley hand, cursive; font-size: 90px; color: black;" href="{% url 'index' %}">Jardin | Le Jardin</a>
@@ -120,31 +119,37 @@
                     </div>
                     <div id="dropdown-mobile">
                     <ul style="list-style-type: none; padding: 0px;">
-                        <div class="listing" style="padding: 0 0 0 20px;"><li>Food</li></div>
+                        <div class="listing" style="padding: 0 0 0 20px;">
+                            <li><a style="font-size: 3rem; color: black;" href="{% url 'categories' 'food' %}">Food</a></li>
+                        </div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'bread' %}">Bread</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'vegetables' %}">Vegetables</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'meat' %}">Meat</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'fish' %}">Fish</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'fruits' %}">Fruits</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'food' 'sweets' %}">Sweets</a></li></div>
-                        <div class="listing" style="padding: 0 0 0 20px;"><li>Personal Care</li></div>
+                        <div class="listing" style="padding: 0 0 0 20px;">
+                            <li><a style="font-size: 3rem; color: black;" href="{% url 'categories' 'personal_care' %}">Personal Care</a></li>
+                        </div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'personal_care' 'for_hair' %}">For Hair</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'personal_care' 'for_body' %}">For Body</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'personal_care' 'for_face' %}">For Face</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'personal_care' 'cosmetics' %}">Cosmetics</a></li></div>
-                        <div class="listing" style="padding: 0 0 0 20px;"><li>Accessories</li></div>
+                        <div class="listing" style="padding: 0 0 0 20px;">
+                            <li><a style="font-size: 3rem; color: black;" href="{% url 'categories' 'accessories' %}">Accessories</a></li>
+                        </div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'accessories' 'bags' %}">Bags</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'accessories' 'candles' %}">Candles</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'category' 'accessories' 'christmas' %}">Christmas</a></li></div>
                         <div class="listing" style="display: flex; justify-content: space-between; padding: 0 20px 0 20px;">
-                            <li>Account</li>
+                            <li><a style="font-size: 3rem; color: black;" href="{% url 'account' %}">Account</a></li>
                             <form class="form" action="{% url 'cart' %}">
                                 <button id="cart-button" class="btn btn-circle"></button>
                             </form>
                         </div>
                         {% if user.is_authenticated %}
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'orders_view' %}">My Orders</a></li></div>
-                        <div class="sublisting listing"><li><a class="nav-link" href="#">Watchlist</a></li></div>
+                        <div class="sublisting listing"><li><a class="nav-link" href="{% url 'watchlist' %}">Watchlist</a></li></div>
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'logout' %}">Log Out</a></li></div>
                         {% else %}
                         <div class="sublisting listing"><li><a class="nav-link" href="{% url 'login' %}">Log In</a></li></div>

@@ -4,22 +4,82 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
-        <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ listing.title }}</a>
+        <div style="display: flex; flex-direction: row; align-items: center;;">
+            <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ listing.title }}</a>
+            <div style="margin-left: auto;">
+                <form class="form" action="{% url 'update_watchlist' listing.id %}">
+                    <button class="btn btndanger"><a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Watchlist</a></button>
+                </form>
+            </div>
+        </div>
         <br>
         <br>
         <div {% if request.user_agent.is_mobile %} style="display: inline-block;" {% else %} style="display: flex; flex-direction: row; gap: 20px;" {% endif %}>
             {% load static %}
             <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="800" height="800" {% else %} width="300" height="300" {% endif %}>
             <div>
-                <p {% if request.user_agent.is_mobile %} style="font-size: 3.2rem;" {% endif %}>Price: ${{ listing.price }}</p>
-                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>{{ listing.description }}</p>
-                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
-                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Category: {{ listing.category.category_name }}</p>
-                <p {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.8rem;" {% endif %}>Price: ${{ listing.price }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>{{ listing.description }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Category: {{ listing.category.category_name }}</p>
+                <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
                 <form class="form" action="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" method="post">
                     {% csrf_token %}
-                    <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="width: 500px; height: 90px;" {% else %} style="width: 300px; height: 40px;" {% endif %}><a {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>Add To Cart</a></button>
+                    <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="width: 400px; height: 80px;" {% else %} style="width: 300px; height: 40px;" {% endif %}><a {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Add To Cart</a></button>
                 </form>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div>
+            <p class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Comments</p>
+            <br>
+            {% if user.is_authenticated %}
+            <div>
+                {% if not request.user_agent.is_mobile %}
+                <form class="form" action="{% url 'add_comment' %}" method="post">
+                    {% csrf_token %}
+                    <div style="display: flex; flex-direction: row; align-items: center; padding: 0 10px 0 15px;">
+                        <input type="hidden" name="item" value="{{ listing.id }}">
+                        <textarea class="form-control col sendcomment" name="comment" style="margin-right: 15px;" rows="3"></textarea>
+                        <button class="btn btnprimary" type="submit">
+                            <a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Comment</a>
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <form class="form" action="{% url 'add_comment' %}" method="post">
+                    {% csrf_token %}
+                    <div style="display: flex; flex-direction: column; align-items: center; padding: 0 10px 0 15px;">
+                        <input type="hidden" name="item" value="{{ listing.id }}">
+                        <textarea class="form-control col" name="comment" style="margin-bottom: 10px;" rows="6"></textarea>
+                        <div style="margin-left: auto;">
+                            <button class="btn btnprimary" type="submit">
+                                <a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Comment</a>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+            {% endif %}
+            <div style="padding: 10px;">
+                {% for comment in comments %}
+                    <div class="row">
+                        <div class="comment mt-4 text-justify float-left">
+                            {% if request.user_agent.is_mobile %}
+                            <h2>{{ comment.com_user_id }}</h2>
+                            {% else %}
+                            <h5>{{ comment.com_user_id }}</h5>
+                            {% endif %}
+                            <span>  {{ comment.time|date:'Y-m-d h:m' }}</span>
+                            <p {% if request.user_agent.is_mobile %} style="font-size: 1.8rem;" {% endif %}>{{ comment.comment }}</p>
+                            <br>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
         <br>

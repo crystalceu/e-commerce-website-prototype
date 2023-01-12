@@ -117,11 +117,13 @@ def account(request):
     if request.method == "POST":
         if not request.user.check_password(request.POST['current_password']):
             return render(request, "shop/information.html", {
-                "information": "Incorrect Password"
+                "information": "Incorrect Password",
+                "title": "Change Password"
             })
         elif request.POST['new_password'] != request.POST['repeat_new_password']:
             return render(request, "shop/information.html", {
-                "information": "Passwords are not the same"
+                "information": "Passwords are not the same",
+                "title": "Change Password"
             })
         else:
             u = User.objects.get(id=request.user.id)
@@ -130,7 +132,8 @@ def account(request):
             u.save()
             login(request, authenticate(username=username, password=request.POST['new_password']))
             return render(request, "shop/information.html", {
-                "information": "Password is successfully changed"
+                "information": "Password is successfully changed",
+                "title": "Change Password"
             })
     else:
         return render(request, "shop/account.html")
@@ -169,7 +172,10 @@ def cart(request):
                 order.product.add(obj)
         request.session['cart_session'] = {}
             
-        return render(request, "shop/success.html")
+        return render(request, "shop/information.html", {
+                "information": "Thank You For Your Purchase!",
+                "title": "Cart"
+        })
     else:
         return render(request, "shop/cart.html", {
             "listings": listings,
@@ -192,7 +198,6 @@ def listing(request, bigcategory, category):
     else:
         cat = category[0].upper() + category[1:]
     listings = ProductListings.objects.filter(category__category_name = cat)
-    #print(listings)
     return render(request, "shop/listings.html", {
         "category": cat,
         "listings": listings
@@ -210,10 +215,12 @@ def listing_view(request, bigcategory, category, listing_id):
         return HttpResponseRedirect(reverse("listing_view", kwargs={'bigcategory': bigcategory, 'category': category, 'listing_id': listing_id}))
     else:
         cat = category[0].upper() + category[1:]
-        listing = ProductListings.objects.get(id = listing_id)
+        listing = ProductListings.objects.get(id=listing_id)
+        comments = Comments.objects.filter(com_item_id=listing_id)
         return render(request, "shop/listing.html", {
             "category": cat,
-            "listing": listing
+            "listing": listing,
+            "comments": comments
         })
 
 def update_cart(request, listing_id, action):
@@ -233,13 +240,35 @@ def orders_view(request):
     listings = Orders.objects.filter(buyer_id = request.user)
     return render(request, "shop/orders.html", {
         "listings": listings
-})
+    })
 
 def order_view(request, order_id):
     products = Orders.objects.get(id = order_id)
-    print(products)
-    print(products.product)
-    print(products.product.all)
     return render(request, "shop/order.html", {
         "products": products
     })
+
+def watchlist(request):
+    listings_food = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Food", id__in=Watchlist.objects.filter(user_id=request.user.id))
+    listings_care = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="PersonalCare", id__in=Watchlist.objects.filter(user_id=request.user.id))
+    listings_accessories = ProductListings.objects.filter(category__bigcategory_name_id__bigcategory_name="Accessories", id__in=Watchlist.objects.filter(user_id=request.user.id))
+    return render(request, "shop/watchlist.html", {
+        "listings_food": listings_food,
+        "listings_care": listings_care,
+        "listings_accessories": listings_accessories
+    })
+
+def update_watchlist(request, listing_id):
+    return render(request, "shop/watchlist.html")
+
+def add_comment(request):
+    if request.method == "POST":
+        comment = {'com_user_id':request.user, 
+        'com_item_id':ProductListings.objects.get(id=request.POST['item']), 
+        'comment':request.POST['comment']}
+        listing = Comments.objects.create(**comment)
+        listing.save()
+    return HttpResponseRedirect(reverse("listing_view", 
+    kwargs={'bigcategory': ProductListings.objects.get(id=request.POST['item']).category.bigcategory_name_id.bigcategory_name, 
+    'category': ProductListings.objects.get(id=request.POST['item']).category.category_name, 
+    'listing_id': request.POST['item']}))

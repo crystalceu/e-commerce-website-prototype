@@ -10,7 +10,9 @@
             <div>
                 {% load static %}
                 <div style="flex-direction: column;">
-                    <img src="{% static listing.image.url %}" width="300" height="300">
+                    <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                        <img src="{% static listing.image.url %}" width="300" height="300">
+                    </a>
                     <br>
                     <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
                 </div>
@@ -28,7 +30,9 @@
             <div>
                 {% load static %}
                 <div style="flex-direction: column;">
-                    <img src="{% static listing.image.url %}" width="300" height="300">
+                    <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                        <img src="{% static listing.image.url %}" width="300" height="300">
+                    </a>
                     <br>
                     <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
                 </div>
@@ -46,7 +50,9 @@
             <div>
                 {% load static %}
                 <div style="flex-direction: column;">
-                    <img src="{% static listing.image.url %}" width="300" height="300">
+                    <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                        <img src="{% static listing.image.url %}" width="300" height="300">
+                    </a>
                     <br>
                     <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
                 </div>
@@ -76,7 +82,9 @@
                 {% for listing in listings_food %}
                     <div class="carousel-item {% if listing.id == food_first %}active{% endif %}">
                         <div style="display: flex; gap: 20px;">
-                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                                <img src="{% static listing.image.url %}" width="300" height="300">
+                            </a>
                             <div>
                                 <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
                                 <h4>{{ listing.description }}</h4>
@@ -121,7 +129,9 @@
                 {% for listing in listings_food %}
                     <div class="carousel-item {% if listing.id == food_first %}active{% endif %}">
                         <div style="display: flex; gap: 20px;">
-                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                                <img src="{% static listing.image.url %}" width="300" height="300">
+                            </a>
                             <div>
                                 <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
                                 <h4>{{ listing.description }}</h4>
@@ -166,7 +176,9 @@
                 {% for listing in listings_accessories %}
                     <div class="carousel-item {% if listing.id == accessories_first %}active{% endif %}">
                         <div style="display: flex; gap: 20px;">
-                            <img src="{% static listing.image.url %}" width="300" height="300">
+                            <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">
+                                <img src="{% static listing.image.url %}" width="300" height="300">
+                            </a>
                             <div>
                                 <a href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" style="font-size: 2.5rem;">{{ listing.title }}</a>
                                 <h4>{{ listing.description }}</h4>
