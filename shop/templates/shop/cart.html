@@ -4,28 +4,41 @@
 
 {% block body %}
     <div style="padding-top: 50px;">
+        {% if message %}
+        <div class="alert alert-info" role="alert">{{ message }}</div>
+        {% endif %}
         <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Cart</a>
         {% for listing in listings %}
         <div style="display: flex; flex-direction: row; padding: 20px; font-size: 20px; ;">
             {% load static %}
             <img src="{% static listing.image.url %}" {% if request.user_agent.is_mobile %} width="500" height="500" {% else %} width="200" height="200" {% endif %}>
-            <div style="padding-left: 3rem; display: flex; flex-direction: column; align-items: center;">
-                <a {% if request.user_agent.is_mobile %} style="font-size: 3.3rem;" {% endif %} href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
-                <div style="display: flex; flex-direction: row; align-items: flex-end;">
-                    <form class="form" action="{% url 'update_cart' listing.id 'remove' %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="height: 80px; width: 80px;" {% endif %}><a{% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>-</a></button>
-                    </form>
-                    <a {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>&nbsp;{{ listing.quantity }}&nbsp;</a>
-                    <form class="form" action="{% url 'update_cart' listing.id 'add' %}" method="post">
-                        {% csrf_token %}
-                        <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="height: 80px; width: 80px;" {% endif %}><a{% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>+</a></button>
-                    </form>
+            {% if request.user_agent.is_mobile %}
+            <div style="display: flex; flex-direction: column;">
+            {% endif %}
+                <div {% if request.user_agent.is_mobile %} style="padding-left: 3rem; display: flex; flex-direction: column;" {% else %} style="padding-left: 2rem; display: flex; flex-direction: column;" {% endif %}>
+                    <a {% if request.user_agent.is_mobile %} style="font-size: 3.3rem;" {% endif %} href="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}">{{ listing.title }}</a>
+                    <div style="display: flex; flex-direction: row; align-items: flex-end;">
+                        <form class="form" action="{% url 'update_cart' listing.id 'remove' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="route" value="cart">
+                            <input type="hidden" name="event" value="remove">
+                            <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="height: 80px; width: 80px;" {% endif %}><a{% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>-</a></button>
+                        </form>
+                        <a {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>&nbsp;{{ listing.quantity }}&nbsp;</a>
+                        <form class="form" action="{% url 'update_cart' listing.id 'add' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="route" value="cart">
+                            <input type="hidden" name="event" value="add">
+                            <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="height: 80px; width: 80px;" {% endif %}><a{% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% endif %}>+</a></button>
+                        </form>
+                    </div>
                 </div>
+                <div style="margin-top: auto; margin-left: auto;">
+                    <a {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>${% widthratio listing.price 1 listing.quantity %}</a>
+                </div>
+            {% if request.user_agent.is_mobile %}
             </div>
-            <div style="margin-top: auto; margin-left: auto;">
-                <a {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>${% widthratio listing.price 1 listing.quantity %}</a>
-            </div>
+            {% endif %}
         </div>
         <br>
         {% endfor %}

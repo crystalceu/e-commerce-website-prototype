@@ -68,9 +68,21 @@ class Comments(models.Model):
     com_user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name="com_user_id")
     com_item_id = models.ForeignKey(ProductListings, on_delete=models.CASCADE, related_name="com_item_id")
     comment = models.CharField(max_length = 256)
+    rating = models.IntegerField(default = 0)
     time = models.DateTimeField(default=timezone.now)
 
     @classmethod
     def create(cls, **dinfo):
-        comment = cls(com_user_id=dinfo[0], com_item_id=dinfo[1], comment=dinfo[2])
+        comment = cls(com_user_id=dinfo[0], com_item_id=dinfo[1], comment=dinfo[2], rating=dinfo[3])
+        return comment
+
+class CommentReviews(models.Model):
+    id = models.AutoField(primary_key=True)
+    comment_id = models.ForeignKey(Comments, on_delete=models.CASCADE, related_name="comment_id")
+    liked_user_id = models.ManyToManyField(User, blank=True, related_name="liked_user_id")
+    disliked_user_id = models.ManyToManyField(User, blank=True, related_name="disliked_user_id")
+
+    @classmethod
+    def create(cls, **dinfo):
+        comment = cls(comment_id=dinfo[0])
         return comment

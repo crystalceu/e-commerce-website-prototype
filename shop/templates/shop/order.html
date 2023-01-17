@@ -6,11 +6,17 @@
     <div style="padding-top: 50px;">
         <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Order #{{ products.id }} From {{ products.order_time }}</a>
         <div class="row" style="padding: 20px;">
-            <ul {% if request.user_agent.is_mobile %} style="font-size: 2.8rem;" {% else %} style="font-size: 20px;" {% endif %}>
+            <table {% if not request.user_agent.is_mobile %} style="width:450px" {% endif %}>
             {% for product in products.product.all %}
-                <li><a {% if request.user_agent.is_mobile %} style="font-size: 2.8rem;" {% else %} style="font-size: 20px;" {% endif %} href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}">{{ product.product_id.title }}&nbsp;&nbsp;&nbsp;{{ product.product_quantity }}&nbsp;&nbsp;&nbsp;${{ product.product_price }}</a></li>
+                {% load static %}
+                <tr {% if request.user_agent.is_mobile %} style="font-size: 2.8rem; text-align: center;" {% else %} style="font-size: 20px; text-align: center;" {% endif %}>
+                    <th {% if request.user_agent.is_mobile %} width="180px" {% else %} width="80px" {% endif %}><a href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}"><img src="{% static product.product_id.image.url %}" {% if request.user_agent.is_mobile %} width="180px" {% else %} width="80px" {% endif %}></a></th>
+                    <th><a href="{% url 'listing_view' product.product_id.category.bigcategory_name_id.bigcategory_name|lower product.product_id.category.category_name|lower product.product_id.id %}">{{ product.product_id.title }}</a></th>
+                    <th {% if request.user_agent.is_mobile %} width="150px" {% else %} width="80px" {% endif %}>{{ product.product_quantity }}</th>
+                    <th {% if request.user_agent.is_mobile %} width="150px" {% else %} width="80px" {% endif %}>${{ product.product_price }}</th>
+                </tr>
             {% endfor %}
-            </ul>
+            </table>
         </div>
         <br>
         <div {% if request.user_agent.is_mobile %} style="font-size: 3rem;" {% else %} style="font-size: 30px;" {% endif %}>

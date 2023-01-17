@@ -3,12 +3,15 @@
 {% block title %}{{ listing.title }}{% endblock %}
 
 {% block body %}
-    <div style="padding-top: 50px;">
+    <div {% if request.user_agent.is_mobile %} style="padding-top: 70px;" {% else %} style="padding-top: 40px;" {% endif %}>
+        {% if message %}
+        <div class="alert alert-info" role="alert">{{ message }}</div>
+        {% endif %}
         <div style="display: flex; flex-direction: row; align-items: center;;">
             <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ listing.title }}</a>
             <div style="margin-left: auto;">
                 <form class="form" action="{% url 'update_watchlist' listing.id %}">
-                    <button class="btn btndanger"><a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Watchlist</a></button>
+                    <button class="btn {{ watchlist_status }}" id="watchlist-button"><a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Watchlist</a></button>
                 </form>
             </div>
         </div>
@@ -23,16 +26,14 @@
                 <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Manufactured By: {{ listing.manufacturer.manufacturer_name }}</p>
                 <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Category: {{ listing.category.category_name }}</p>
                 <p {% if request.user_agent.is_mobile %} style="font-size: 2.2rem;" {% endif %}>Big Category: {{ listing.category.bigcategory_name_id.bigcategory_name }}</p>
-                <form class="form" action="{% url 'listing_view' listing.category.bigcategory_name_id.bigcategory_name|lower listing.category.category_name|lower listing.id %}" method="post">
+                <form class="form" action="{% url 'update_cart' listing.id 'add' %}" method="post">
                     {% csrf_token %}
+                    <input type="hidden" name="route" value="listing">
                     <button class="btn btnprimary" {% if request.user_agent.is_mobile %} style="width: 400px; height: 80px;" {% else %} style="width: 300px; height: 40px;" {% endif %}><a {% if request.user_agent.is_mobile %} style="font-size: 2.5rem;" {% endif %}>Add To Cart</a></button>
                 </form>
             </div>
         </div>
-        <br>
-        <br>
-        <br>
-        <br>
+        <br><br><br><br>
         <div>
             <p class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Comments</p>
             <br>
@@ -40,17 +41,35 @@
             <div>
                 {% if not request.user_agent.is_mobile %}
                 <form class="form" action="{% url 'add_comment' %}" method="post">
+                    <div style="margin-left: 15px; padding-bottom: 5px;">
+                        <input type="hidden" value="0" name="rating-id" id="rating-id">
+                        <a><img id="star1" src="{% static 'shop/star-empty.png' %}" width="30px"></a>
+                        <a><img id="star2" src="{% static 'shop/star-empty.png' %}" width="30px"></a>
+                        <a><img id="star3" src="{% static 'shop/star-empty.png' %}" width="30px"></a>
+                        <a><img id="star4" src="{% static 'shop/star-empty.png' %}" width="30px"></a>
+                        <a><img id="star5" src="{% static 'shop/star-empty.png' %}" width="30px"></a>
+                    </div>
                     {% csrf_token %}
                     <div style="display: flex; flex-direction: row; align-items: center; padding: 0 10px 0 15px;">
                         <input type="hidden" name="item" value="{{ listing.id }}">
                         <textarea class="form-control col sendcomment" name="comment" style="margin-right: 15px;" rows="3"></textarea>
-                        <button class="btn btnprimary" type="submit">
-                            <a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Comment</a>
-                        </button>
+                        <div>
+                            <button class="btn btnprimary" type="submit">
+                                <a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Comment</a>
+                            </button>
+                        </div>
                     </div>
                 </form>
                 {% else %}
                 <form class="form" action="{% url 'add_comment' %}" method="post">
+                    <div style="display: flex; flex-direction: row; margin-left: 15px; padding-bottom: 5px;">
+                        <input type="hidden" value="0" id="rating-id" name="rating-id">
+                        <a><img id="star1" src="{% static 'shop/star-empty.png' %}" width="45px"></a>
+                        <a><img id="star2" src="{% static 'shop/star-empty.png' %}" width="45px"></a>
+                        <a><img id="star3" src="{% static 'shop/star-empty.png' %}" width="45px"></a>
+                        <a><img id="star4" src="{% static 'shop/star-empty.png' %}" width="45px"></a>
+                        <a><img id="star5" src="{% static 'shop/star-empty.png' %}" width="45px"></a>
+                    </div>
                     {% csrf_token %}
                     <div style="display: flex; flex-direction: column; align-items: center; padding: 0 10px 0 15px;">
                         <input type="hidden" name="item" value="{{ listing.id }}">
@@ -69,6 +88,16 @@
                 {% for comment in comments %}
                     <div class="row">
                         <div class="comment mt-4 text-justify float-left">
+                            <div style="display: flex; flex-direction: row;">
+                                {% load static %}
+                                {% for i in range %}
+                                    {% if i <= comment.rating %}
+                                    <img src="{% static 'shop/star.png' %}" width="20px">
+                                    {% else %}
+                                    <img src="{% static 'shop/star-empty.png' %}" width="20px">
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
                             {% if request.user_agent.is_mobile %}
                             <h2>{{ comment.com_user_id }}</h2>
                             {% else %}
@@ -76,6 +105,28 @@
                             {% endif %}
                             <span>  {{ comment.time|date:'Y-m-d h:m' }}</span>
                             <p {% if request.user_agent.is_mobile %} style="font-size: 1.8rem;" {% endif %}>{{ comment.comment }}</p>
+                            <div style="display: flex; flex-direction: row; align-items: center; justify-content: flex-end;" class="comment-review-button">
+                                {% if user.is_authenticated %}
+                                <form class="form" action="{% url 'comment_review' comment.id 'up' %}">
+                                    <button class="btn">
+                                        <a><img src="{% static 'shop/thumb-up-2.png' %}" width="23px"></a>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <a><img src="{% static 'shop/thumb-up-2.png' %}" width="23px"></a>
+                                {% endif %}
+                                <a {% if request.user_agent.is_mobile %} style="font-size: 1.5rem;" {% else %} style="font-size: 1rem;" {% endif %}>{% if comment.reviews %}{{ comment.reviews.liked_user_id.all.count }}{% else %}0{% endif %}</a>
+                                {% if user.is_authenticated %}
+                                <form  class="form" action="{% url 'comment_review' comment.id 'down' %}">
+                                    <button class="btn">
+                                        <a><img src="{% static 'shop/thumb-down-2.png' %}" width="23px"></a>
+                                    </button>
+                                </form>
+                                {% else %}
+                                <a><img src="{% static 'shop/thumb-down-2.png' %}" width="23px"></a>
+                                {% endif %}
+                                <a {% if request.user_agent.is_mobile %} style="font-size: 1.5rem;" {% else %} style="font-size: 1rem;" {% endif %}>{% if comment.reviews %}{{ comment.reviews.disliked_user_id.all.count }}{% else %}0{% endif %}</a>
+                            </div>
                             <br>
                         </div>
                     </div>

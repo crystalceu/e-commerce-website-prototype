@@ -2,8 +2,10 @@
 
 {% block body %}
 
-    <h2>Login</h2>
-
+    <a  class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">Login</a>
+    <br>
+    <br>
+    
     {% if message %}
         <div>{{ message }}</div>
     {% endif %}
@@ -11,12 +13,12 @@
     <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
-            <input autofocus class="form-control" type="text" name="username" placeholder="Username">
+            <input autofocus class="form-control" type="text" name="username" placeholder="Username" {% if request.user_agent.is_mobile %} style="font-size: 1.9rem; margin-bottom: 5px;" {% else %} style="margin-bottom: 5px;" {% endif %}>
         </div>
         <div class="form-group">
-            <input class="form-control" type="password" name="password" placeholder="Password">
+            <input class="form-control" type="password" name="password" placeholder="Password" {% if request.user_agent.is_mobile %} style="font-size: 1.9rem; margin-bottom: 15px;" {% else %} style="margin-bottom: 15px;" {% endif %}>
         </div>
-        <input class="btn btn-primary" type="submit" value="Login">
+        <button class="btn btnprimary" type="submit"><a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Login</a></button>
     </form>
 
     Don't have an account? <a href="{% url 'register' %}">Register here.</a>
