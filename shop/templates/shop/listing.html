@@ -9,11 +9,13 @@
         {% endif %}
         <div style="display: flex; flex-direction: row; align-items: center;;">
             <a class="{% if request.user_agent.is_mobile %}mobile-cat-h{% else %}cat-h{% endif %}">{{ listing.title }}</a>
+            {% if user.is_authenticated %}
             <div style="margin-left: auto;">
                 <form class="form" action="{% url 'update_watchlist' listing.id %}">
                     <button class="btn {{ watchlist_status }}" id="watchlist-button"><a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Watchlist</a></button>
                 </form>
             </div>
+            {% endif %}
         </div>
         <br>
         <br>
@@ -73,7 +75,7 @@
                     {% csrf_token %}
                     <div style="display: flex; flex-direction: column; align-items: center; padding: 0 10px 0 15px;">
                         <input type="hidden" name="item" value="{{ listing.id }}">
-                        <textarea class="form-control col" name="comment" style="margin-bottom: 10px;" rows="6"></textarea>
+                        <textarea class="form-control col" name="comment" style="font-size: 2.2rem; margin-bottom: 10px;" rows="4"></textarea>
                         <div style="margin-left: auto;">
                             <button class="btn btnprimary" type="submit">
                                 <a {% if request.user_agent.is_mobile %} style="font-size: 2rem;" {% endif %}>Comment</a>

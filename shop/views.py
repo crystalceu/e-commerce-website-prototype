@@ -40,11 +40,13 @@ def get_listing_data(request, listing_id):
     cat = category[0].upper() + category[1:]
     bigcategory = item_obj.category.bigcategory_name_id.bigcategory_name
     bigcat = bigcategory[0].upper() + bigcategory[1:]
-    obj = Watchlist.objects.filter(item_id=listing_id, user_id=request.user)
-    if len(obj) == 0:
-        watchlist_status = 'btn-secondary'
-    else:
-        watchlist_status = 'btnsuccess'
+    watchlist_status = ""
+    if request.user.is_authenticated:
+        obj = Watchlist.objects.filter(item_id=listing_id, user_id=request.user)
+        if len(obj) == 0:
+            watchlist_status = 'btn-secondary'
+        else:
+            watchlist_status = 'btnsuccess'
     comments = Comments.objects.filter(com_item_id=listing_id)
     return {'bigcategory': bigcat, 'category': cat, 'listing': item_obj, 'comments': comments, 'watchlist_status': watchlist_status}
 
